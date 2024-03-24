@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Password Generator</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #1e1e1e;
+      color: #ffffff;
+    }
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+    h1, h2 {
+      color: #ffffff;
+    }
+    .form-group label {
+      color: #ffffff;
+    }
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+    }
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+    .footer {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-size: 12px;
+      color: #808080;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1 class="mb-4">Password Generator</h1>
+    <div class="form-group">
+      <label for="length">Password Length:</label>
+      <input type="number" id="length" class="form-control" value="8" min="8" max="100">
+    </div>
+    <div class="form-group">
+      <label for="options">Options:</label>
+      <select id="options" class="form-control">
+        <option value="all">All Characters</option>
+        <option value="letters">Letters Only</option>
+        <option value="numbers">Numbers Only</option>
+        <option value="special">Special Characters Only</option>
+      </select>
+    </div>
+    <button id="generateBtn" class="btn btn-primary">Generate</button>
+    <a id="downloadBtn" class="btn btn-primary ml-2" download="vatoo.txt">Download Password</a>
+    <hr>
+    <h2>Generated Password:</h2>
+    <p id="generatedPassword"></p>
+  </div>
+  <div class="footer">
+    Developed with <span style="color: #f3072e;">&hearts;</span> by DominikVatoo for GitHub Skids
+  </div>
+
+  <script>
+    const generateBtn = document.getElementById('generateBtn');
+    const downloadBtn = document.getElementById('downloadBtn');
+    const generatedPasswordElement = document.getElementById('generatedPassword');
+
+    generateBtn.addEventListener('click', () => {
+      const length = document.getElementById('length').value;
+      const options = document.getElementById('options').value;
+      let charset = '';
+
+      switch(options) {
+        case 'letters':
+          charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+          break;
+        case 'numbers':
+          charset = '0123456789';
+          break;
+        case 'special':
+          charset = '!@#$%^&*()-_=+';
+          break;
+        default:
+          charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()-_=+';
+          break;
+      }
+
+      if (length < 8 || length > 100) {
+        alert("Password length must be between 8 and 100 characters!");
+        return;
+      }
+
+      let password = '';
+      for(let i = 0; i < length; i++) {
+        const randomIndex = Math.floor(Math.random() * charset.length);
+        password += charset[randomIndex];
+      }
+
+      generatedPasswordElement.textContent = password;
+      downloadBtn.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(password));
+    });
+  </script>
+</body>
+</html>
